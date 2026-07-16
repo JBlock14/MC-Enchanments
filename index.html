@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MC Enchantments</title>
+    <link rel="stylesheet" href="code.css" />
+    <link rel="icon" href="assets/tab_icon.gif" type="image/gif" />
+  </head>
+  <body>
+    <div class="bar">
+      <div class="search-wrapper">
+        <img src="assets/search.png" alt="search" class="search-icon" />
+
+        <input placeholder="" class="search" id="search" />
+      </div>
+      <div class="filter-wrapper" data-name="">
+        <div id="filterBtn" class="filter-btn">
+          <img src="assets/filter.png" class="filter-normal" alt="Filter" />
+          <img src="assets/filter_action.png" class="filter-hover" alt="Active filter" />
+        </div>
+        <div class="filter-popup" id="filterPopup"></div>
+      </div>
+    </div>
+    <div class="language-wrapper">
+      <button id="languageButton">
+        <span id="currentLanguage"></span>
+      </button>
+      <div id="languagePopup">
+        <input id="languageSearch" type="text" aria-label="Search language" />
+        <div id="languageList"></div>
+      </div>
+    </div>
+    <div id="helpOverlay" class="help-overlay">
+      <div class="help-menu">
+        <div class="help-header">
+          <span>/help</span>
+          <button class="close-btn">
+            <img src="assets/close.png" class="close-normal" alt="Close" />
+            <img src="assets/close_action.png" class="close-hover" alt="Close" />
+          </button>
+        </div>
+        <div id="helpContent" class="help-content"></div>
+      </div>
+    </div>
+    <div class="active-filters" id="activeFilters"></div>
+    <div class="section-container" id="sectionContainer"></div>
+    <footer id="footer">
+      <div id="footerText"></div>
+      <button id="supportButton"></button>
+      <div id="legalText"></div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="data.js"></script>
+    <script src="code.js"></script>
+  </body>
+</html>
