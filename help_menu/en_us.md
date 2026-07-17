@@ -38,23 +38,23 @@ You can activate several at once.
 The function is simple: you just need to open the tag with **:** (colon), type the name of the item you want to filter (you can usually see it by hovering the mouse over the icon or tapping it on touch screens), and close again with **:**.  
 Try not to use unnecessary spaces.
 
-| TAG                | FUNCTION              |
-|:------------------:|:---------------------:|
-| `: sword:`         | Filter by sword       |
-| `:axe:`          | Filter by axe         |
-| `: pickaxe:`           | Filter by pickaxe     |
-| `:shovel:`           | Filter by shovel      |
-| `:hoe:`          | Filter by hoe         |
+| TAG             | FUNCTION              |
+|:---------------:|:---------------------:|
+| `:sword:`       | Filter by sword       |
+| `:axe:`         | Filter by axe         |
+| `:pickaxe:`     | Filter by pickaxe     |
+| `:shovel:`      | Filter by shovel      |
+| `:hoe:`         | Filter by hoe         |
 | `:fishing rod:` | Filter by fishing rod |
-| `:mace:`           | Filter by mace        |
-| `:trident:`       | Filter by trident     |
-| `:spear:`          | Filter by spear       |
-| `:bow:`           | Filter by bow         |
-| `:crossbow:`       | Filter by crossbow    |
-| `:helmet:`          | Filter by helmet      |
-| `:chestplate:`        | Filter by chestplate  |
-| `:leggings:`     | Filter by leggings    |
-| `:boots:`          | Filter by boots       |
+| `:mace:`        | Filter by mace        |
+| `:trident:`     | Filter by trident     |
+| `:spear:`       | Filter by spear       |
+| `:bow:`         | Filter by bow         |
+| `:crossbow:`    | Filter by crossbow    |
+| `:helmet:`      | Filter by helmet      |
+| `:chestplate:`  | Filter by chestplate  |
+| `:leggings:`    | Filter by leggings    |
+| `:boots:`       | Filter by boots       |
 
 ---
 
