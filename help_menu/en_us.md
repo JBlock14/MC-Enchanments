@@ -40,21 +40,21 @@ Try not to use unnecessary spaces.
 
 | TAG                | FUNCTION              |
 |:------------------:|:---------------------:|
-| `:espada:`         | Filter by sword       |
-| `:hacha:`          | Filter by axe         |
-| `:pico:`           | Filter by pickaxe     |
-| `:pala:`           | Filter by shovel      |
-| `:azada:`          | Filter by hoe         |
-| `:caña de pescar:` | Filter by fishing rod |
-| `:maza:`           | Filter by mace        |
-| `:tridente:`       | Filter by trident     |
-| `:lanza:`          | Filter by spear       |
-| `:arco:`           | Filter by bow         |
-| `:ballesta:`       | Filter by crossbow    |
-| `:casco:`          | Filter by helmet      |
-| `:pechera:`        | Filter by chestplate  |
-| `:pantalones:`     | Filter by leggings    |
-| `:botas:`          | Filter by boots       |
+| `: sword:`         | Filter by sword       |
+| `:axe:`          | Filter by axe         |
+| `: pickaxe:`           | Filter by pickaxe     |
+| `:shovel:`           | Filter by shovel      |
+| `:hoe:`          | Filter by hoe         |
+| `:fishing rod:` | Filter by fishing rod |
+| `:mace:`           | Filter by mace        |
+| `:trident:`       | Filter by trident     |
+| `:spear:`          | Filter by spear       |
+| `:bow:`           | Filter by bow         |
+| `:crossbow:`       | Filter by crossbow    |
+| `:helmet:`          | Filter by helmet      |
+| `:chestplate:`        | Filter by chestplate  |
+| `:leggings:`     | Filter by leggings    |
+| `:boots:`          | Filter by boots       |
 
 ---
 
