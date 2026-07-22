@@ -43,33 +43,86 @@ function setupModal({ overlayId, menuSelector = ".help-menu", closeButtonSelecto
   });
   return { open, close };
 }
+const dropdowns = [];
+
+function setupDropdown({
+    button,
+    popup,
+    onOpen,
+    onClose,
+    isOpen,
+}) {
+    dropdowns.push({
+        button,
+        popup,
+        close: onClose,
+    });
+
+    button.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        const opened = isOpen();
+
+        // Cerrar todos los menús
+        dropdowns.forEach((dropdown) => {
+            dropdown.close();
+        });
+
+        // Abrir solo el actual si estaba cerrado
+        if (!opened) {
+            onOpen();
+        }
+    });
+}
+document.addEventListener("click", (e) => {
+    dropdowns.forEach((dropdown) => {
+        const clickedOutside =
+            !dropdown.popup.contains(e.target) &&
+            !dropdown.button.contains(e.target);
+
+        if (clickedOutside) {
+            dropdown.close();
+        }
+    });
+});
 
 /* FILTERS */
 let activeFilters = [];
 function closeFilterPopup() {
   filterPopup.style.opacity = "0";
-  filterPopup.style.transform = "translateX(-50%) translateY(-10px)";
+  filterPopup.style.transform =
+    "translateX(-50%) translateY(-10px)";
+
   filterBtn.classList.remove("active");
+
   setTimeout(() => {
-    filterPopup.style.display = "none";
+    if (filterPopup.style.opacity === "0") {
+      filterPopup.style.display = "none";
+    }
   }, 300);
 }
-filterBtn.addEventListener("click", () => {
-  if (filterPopup.style.display === "flex") {
-    closeFilterPopup();
-  } else {
-    filterPopup.style.display = "flex";
-    filterBtn.classList.add("active");
-    setTimeout(() => {
-      filterPopup.style.opacity = "1";
-      filterPopup.style.transform = "translateX(-50%) translateY(0)";
-    }, 10);
-  }
-});
-document.addEventListener("click", (e) => {
-  if (!filterPopup.contains(e.target) && !filterBtn.contains(e.target)) {
-    closeFilterPopup();
-  }
+setupDropdown({
+    button: filterBtn,
+
+    popup: filterPopup,
+
+    isOpen: () => {
+        return filterPopup.style.display === "flex";
+    },
+
+    onOpen: () => {
+        filterPopup.style.display = "flex";
+
+        filterBtn.classList.add("active");
+
+        requestAnimationFrame(() => {
+          filterPopup.style.opacity = "1";
+          filterPopup.style.transform =
+          "translateX(-50%) translateY(0)";
+        });
+    },
+
+    onClose: closeFilterPopup,
 });
 // Filter Menu
 function createFilterOptions() {
@@ -122,7 +175,6 @@ function addFilterBubble(filter) {
   });
   activeFiltersDiv.appendChild(bubble);
 }
-search.value = search.value.replace(/::+/g, ": :");
 // Apply Filters
 function applyFilters() {
   const searchText = search.value.trim().toLowerCase();
@@ -197,6 +249,7 @@ search.addEventListener("input", () => {
   if (text === "/help") {
     search.value = "";
     search.classList.remove("command-mode");
+    search.blur();
     openHelp();
     return;
   }
@@ -281,7 +334,6 @@ function renderSections(data) {
           const itemName = translate(info.key);
           const div = document.createElement("div");
           div.className = "item";
-          div.dataset.name = itemName;
           div.dataset.key = key;
           div.innerHTML = `
             <img src="assets/items/${info.file}" alt="${itemName}">
@@ -336,58 +388,122 @@ const languageList = document.getElementById("languageList");
 const languageSearch = document.getElementById("languageSearch");
 const currentLanguageText = document.getElementById("currentLanguage");
 let currentLanguage = languages.default;
-let fallbackTranslations = {};
 let translations = {};
 /* LANGUAGE SYSTEM */
-async function loadFallbackLanguage() {
-  try {
-    const response = await fetch("lang/en_us.lang");
-    if (!response.ok) return;
-    const text = await response.text();
-    text.split("\n").forEach((line) => {
-      if (!line || line.startsWith("#")) return;
-      const [key, value] = line.split("=");
-      if (key && value) fallbackTranslations[key.trim()] = value.trim();
-    });
-  } catch {
-    console.warn("No se pudo cargar el fallback en_us.lang");
-  }
-}
 async function loadLanguage(lang) {
   try {
-    const response = await fetch(`lang/${lang}.lang`);
-    if (!response.ok) {
-      throw new Error("Language not found");
+    // Cargar siempre el idioma por defecto
+    const defaultResponse = await fetch(
+      `lang/${languages.default}.lang`
+    );
+
+    if (!defaultResponse.ok) {
+      throw new Error(
+        "Default language not found"
+      );
     }
-    const text = await response.text();
-    translations = {};
-    text.split("\n").forEach((line) => {
-      if (!line || line.startsWith("#")) {
-        return;
+
+    const defaultText =
+      await defaultResponse.text();
+
+    const defaultTranslations = {};
+
+    defaultText
+      .split("\n")
+      .forEach((line) => {
+        if (
+          !line ||
+          line.startsWith("#")
+        ) {
+          return;
+        }
+
+        const [key, ...valueParts] =
+          line.split("=");
+
+        if (key && valueParts.length) {
+          defaultTranslations[
+            key.trim()
+          ] = valueParts
+            .join("=")
+            .trim();
+        }
+      });
+
+    // Empezar con el idioma por defecto
+    translations = {
+      ...defaultTranslations,
+    };
+
+    // Si no es el idioma por defecto,
+    // sobrescribir las claves existentes
+    if (lang !== languages.default) {
+      const response = await fetch(
+        `lang/${lang}.lang`
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "Language not found"
+        );
       }
-      const [key, value] = line.split("=");
-      if (key && value) {
-        translations[key.trim()] = value.trim();
-      }
-    });
+
+      const text = await response.text();
+
+      text
+        .split("\n")
+        .forEach((line) => {
+          if (
+            !line ||
+            line.startsWith("#")
+          ) {
+            return;
+          }
+
+          const [
+            key,
+            ...valueParts
+          ] = line.split("=");
+
+          if (
+            key &&
+            valueParts.length
+          ) {
+            translations[
+              key.trim()
+            ] = valueParts
+              .join("=")
+              .trim();
+          }
+        });
+    }
+
     currentLanguage = lang;
-    localStorage.setItem("selectedLanguage", lang);
+
+    localStorage.setItem(
+      "selectedLanguage",
+      lang
+    );
+
     updateLanguageName();
     updateInterfaceLanguage();
     renderLanguageList();
     renderSections(sectionData);
     createFilterOptions();
     applyFilters();
-  } catch {
+
+  } catch (error) {
+    console.error(error);
+
     if (lang !== languages.default) {
-      loadLanguage(languages.default);
+      loadLanguage(
+        languages.default
+      );
     }
   }
 }
 function translate(key) {
-  if (translations[key]) return translations[key];
-  if (fallbackTranslations[key]) return fallbackTranslations[key];
-  return key;
+  return translations[key] || key;
 }
 function updateLanguageName() {
   document.documentElement.lang = currentLanguage;
@@ -487,22 +603,23 @@ async function openHelp() {
 }
 
 /* EVENTS */
-languageButton.addEventListener("click", (e) => {
-  e.stopPropagation();
-  if (languagePopup.style.display === "flex") {
-    languagePopup.style.display = "none";
-  } else {
-    languagePopup.style.display = "flex";
-    languageSearch.focus();
-  }
-});
-document.addEventListener("click", (e) => {
-  if (!languagePopup.contains(e.target) && !languageButton.contains(e.target)) {
-    languagePopup.style.display = "none";
-  }
-});
-languageSearch.addEventListener("input", () => {
-  renderLanguageList(languageSearch.value);
+setupDropdown({
+    button: languageButton,
+
+    popup: languagePopup,
+
+    isOpen: () => {
+        return languagePopup.style.display === "flex";
+    },
+
+    onOpen: () => {
+        languagePopup.style.display = "flex";
+        languageSearch.focus();
+    },
+
+    onClose: () => {
+        languagePopup.style.display = "none";
+    },
 });
 
 // PWA
@@ -525,5 +642,4 @@ if ("serviceWorker" in navigator) {
 }
 
 /* INIT */
-loadFallbackLanguage();
 detectLanguage();

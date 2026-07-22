@@ -6,8 +6,8 @@
   "scope": "/MC-Enchantments/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#1a1a1a",
-  "theme_color": "#1a1a1a",
+  "background_color": "#071427",
+  "theme_color": "#071427",
 
   "icons": [
     {
