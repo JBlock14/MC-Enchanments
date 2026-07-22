@@ -48,9 +48,6 @@ footer {
 #supportButton:hover {
   background: rgba(255, 255, 255, 0.05);
 }
-#supportButton:active {
-  transform: translateY(0);
-}
 #legalText {
   width: 100%;
   box-sizing: border-box;
@@ -542,19 +539,11 @@ code.copyable {
   font-size: 20px;
 }
 
-body.help-open {
-  overflow: hidden;
-}
-
 /* SEGURITY */
 img {
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
-}
-
-body.help-open {
-  overflow: hidden;
 }
 
 /* CELL-PHONE SUPPORT */

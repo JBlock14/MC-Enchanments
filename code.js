@@ -10,7 +10,6 @@ const activeFiltersDiv = document.getElementById("activeFilters");
 // Language
 const availableLanguages = Object.keys(languages.available);
 // Help
-const helpOverlay = document.getElementById("helpOverlay");
 const helpContent = document.getElementById("helpContent");
 
 /* MODALS */
@@ -335,6 +334,7 @@ function renderSections(data) {
           const div = document.createElement("div");
           div.className = "item";
           div.dataset.key = key;
+          div.dataset.name = itemName;
           div.innerHTML = `
             <img src="assets/items/${info.file}" alt="${itemName}">
         `;
@@ -526,9 +526,7 @@ function updateInterfaceLanguage() {
   const supportButton = document.getElementById("supportButton");
   if (supportButton) {
     supportButton.textContent = translate("ui.support");
-    supportButton.addEventListener("click", () => {
-      openHelp();
-    });
+    supportButton.onclick = openHelp;
   }
   const legalText = document.getElementById("legalText");
   if (legalText) {
